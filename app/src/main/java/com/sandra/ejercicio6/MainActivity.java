@@ -17,10 +17,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button boton;
+    private Button boton, boton2;
     private EditText editText1, editText2;
     private RadioGroup radioGroup;
     private RadioButton radio1, radio2, radio3, radio4;
+    private TextView sumar, restar, multiplicar, dividir;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,59 +30,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editText1 = (EditText) findViewById(R.id.num1);
         editText2 = (EditText) findViewById(R.id.num2);
         boton = (Button) findViewById(R.id.boton);
+        boton2 = (Button) findViewById(R.id.boton2);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         radio1 = (RadioButton) findViewById(R.id.radio1);
         radio2 = (RadioButton) findViewById(R.id.radio2);
         radio3 = (RadioButton) findViewById(R.id.radio3);
         radio4 = (RadioButton) findViewById(R.id.radio4);
+        sumar = (TextView) findViewById(R.id.suma);
+        restar = (TextView) findViewById(R.id.resta);
+        multiplicar = (TextView) findViewById(R.id.multiplicacion);
+        dividir = (TextView) findViewById(R.id.division);
         boton.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
-        if (editText1.getText().toString().isEmpty() || editText2.getText().toString().isEmpty()) {
-            Toast.makeText(MainActivity.this, "uno o mas campos están vacios", Toast.LENGTH_SHORT).show();
+                switch (view.getId()) {
+                case R.id.boton2:
+                    if (editText1.getText().toString().isEmpty()==false && editText2.getText().toString().isEmpty()==false) {
 
-        } else if (radio1.isChecked() || radio2.isChecked() || radio3.isChecked() || radio4.isChecked()) {
+                        int n1 = Integer.parseInt(editText1.getText().toString());
+                        int n2 = Integer.parseInt(editText2.getText().toString());
+                        int suma = 0, resta = 0, divo = 0, mult = 0, total = 0;
 
-            Intent explicit_intent;
-            explicit_intent = new Intent(this, Main2Activity.class);
-            int n1 = Integer.parseInt(editText1.getText().toString());
-            int n2 = Integer.parseInt(editText2.getText().toString());
-            int suma = 0, resta = 0, divo = 0, mult = 0;
-
-            switch (radioGroup.getCheckedRadioButtonId()) {
-                case R.id.radio1:
-                    suma = n1 + n2;
-
-                case R.id.radio2:
-                    resta = n1 - n2;
-
-                case R.id.radio3:
-                    mult = n1 * n2;
-
-                case R.id.radio4:
-                    divo = n1 / n2;
-
-            }
-
-                        String sum = Integer.toString(suma);
-                        String rest = Integer.toString(resta);
-                        String multi = Integer.toString(mult);
-                        String divs = Integer.toString(divo);
-
-                        explicit_intent.putExtra("suma", sum);
-                        explicit_intent.putExtra("resta", rest);
-                        explicit_intent.putExtra("multip", multi);
-                        explicit_intent.putExtra("divis", divs);
-                        startActivity(explicit_intent);
-
-                    } else {
-                        Toast.makeText(MainActivity.this, "debe seleconar todas las opciones", Toast.LENGTH_SHORT).show();
+                        if (radio1.isChecked()) {
+                            suma = n1 + n2;
+                            sumar.setText("" + suma);
+                        }
+                        if (radio2.isChecked()) {
+                            resta = n1 - n2;
+                            restar.setText("" + resta);
+                        }
+                        if (radio3.isChecked()) {
+                            mult = n1 * n2;
+                            multiplicar.setText("" + mult);
+                        }
+                        if (radio4.isChecked()) {
+                            divo = n1 / n2;
+                            dividir.setText("" + divo);
+                        }
+                        break;
+                    }else{
+                        Toast.makeText(MainActivity.this, "debe ingresar los valores", Toast.LENGTH_SHORT).show();
                     }
-            }
+            case R.id.boton:
+                if (sumar.getText().toString().isEmpty() || restar.getText().toString().isEmpty() || multiplicar.getText().toString().isEmpty() || dividir.getText().toString().isEmpty()) {
+                    Toast.makeText(MainActivity.this, "debe elegir todas las opciones", Toast.LENGTH_SHORT).show();
+                }else {
+                    Intent explicit_intent;
+                    explicit_intent = new Intent(this, Main2Activity.class);
+
+                    String sum= String.valueOf(sumar.getText());
+                    String rest= String.valueOf(restar.getText());
+                    String multi= String.valueOf(multiplicar.getText());
+                    String divs= String.valueOf(dividir.getText());
+
+                    explicit_intent.putExtra("suma", sum);
+                    explicit_intent.putExtra("resta", rest);
+                    explicit_intent.putExtra("multip", multi);
+                    explicit_intent.putExtra("divis", divs);
+                    startActivity(explicit_intent);
+                    break;
+                }
         }
+        }
+    }
+
+
+
+
 
 
 
